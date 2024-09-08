@@ -15,13 +15,14 @@ namespace KolayIK.Data.Repositories
         {
         }
 
-        public async Task<AddressInfo> GetByUserIdAsync(int userId)
+        public async Task<IEnumerable<AddressInfo>> GetByUserIdAsync(int userId)
         {
             return await KolayIKDBContext.AddressInfos
-                .Include(r => r.City)
-                .Include(r => r.Country)
-                .Include(r => r.County)
-                .FirstOrDefaultAsync(r => r.UserID == userId);
+                    .Include(r => r.City)
+                    .Include(r => r.Country)
+                    .Include(r => r.County)
+                    .Where(r => r.UserID == userId)
+                    .ToListAsync();
         }
         public async Task<AddressInfo> GetByIDAsync(int id)
         {

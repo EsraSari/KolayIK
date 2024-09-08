@@ -19,8 +19,7 @@ namespace KolayIK.Core.Modal.Idendity
         public double Salary { get; set; }
         public Gender Gender { get; set; }
         public int GenderID { get; set; }
-        public AddressInfo AddressInfo { get; set; }
-        public int? AddressInfoID { get; set; }
+        public List<AddressInfo> Addresses { get; set; }
         public int EmergencyPersonID { get; set; }
         public EmergencyPerson EmergencyPerson { get; set; }
         public Company Company { get; set; }

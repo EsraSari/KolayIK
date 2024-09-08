@@ -26,11 +26,11 @@ namespace KolayIK.Data.Repositories
         {
             return await KolayIKDBContext.Users
                 .Where(x => x.ManagerID == managerID)
-                .Include(u => u.AddressInfo)
+                .Include(u => u.Addresses)
                 .Include(g => g.Gender)
-                .Include(c => c.AddressInfo.Country)
-                .Include(c => c.AddressInfo.City)
-                .Include(c => c.AddressInfo.County)
+                //.Include(c => c.Addresses.Countr)
+                //.Include(c => c.AddressInfo.City)
+                //.Include(c => c.AddressInfo.County)
                 .Include(p => p.Position)
                 .Include(g => g.Gender)
                 .Include(c => c.Company)
@@ -43,10 +43,10 @@ namespace KolayIK.Data.Repositories
             return await KolayIKDBContext.UserRoles
                 .Where(c => c.RoleId == roleID)
                 .Join(KolayIKDBContext.Users, ur => ur.UserId, u => u.Id, (ur, u) => u)
-                .Include(u => u.AddressInfo)
-                .Include(c => c.AddressInfo.Country)
-                .Include(c => c.AddressInfo.City)
-                .Include(c => c.AddressInfo.County)
+                //.Include(u => u.AddressInfo)
+                //.Include(c => c.AddressInfo.Country)
+                //.Include(c => c.AddressInfo.City)
+                //.Include(c => c.AddressInfo.County)
                 .Include(p => p.Position)
                 .Include(g => g.Gender)
                 .Include(e => e.EmergencyPerson)
@@ -79,13 +79,13 @@ namespace KolayIK.Data.Repositories
                     Salary = result.User.Salary,
                     GenderName = result.User.Gender.GenderName,
                     CompanyName = result.User.Company.CompanyName ?? "Bilinmiyor",
-                    CountryName = result.User.AddressInfo.Country.CountryName,
-                    CityName = result.User.AddressInfo.City.CityName,
-                    CountyName = result.User.AddressInfo.County.CountyName,
-                    EmergencyPerson = result.User.EmergencyPerson != null
-                    ? $"{result.User.EmergencyPerson.FirstName} {result.User.EmergencyPerson.LastName}"
-                    : "Bilinmiyor",
-                    AddressDetail = result.User.AddressInfo.AddressDetail ?? "Bilinmiyor",
+                    //CountryName = result.User.AddressInfo.Country.CountryName,
+                    //CityName = result.User.AddressInfo.City.CityName,
+                    //CountyName = result.User.AddressInfo.County.CountyName,
+                    //EmergencyPerson = result.User.EmergencyPerson != null
+                    //? $"{result.User.EmergencyPerson.FirstName} {result.User.EmergencyPerson.LastName}"
+                    //: "Bilinmiyor",
+                    //AddressDetail = result.User.AddressInfo.AddressDetail ?? "Bilinmiyor",
                     RoleID = result.RoleID,
                     AddedDate = result.User.AddedDate,
                     ModifiedDate = result.User.ModifiedDate,

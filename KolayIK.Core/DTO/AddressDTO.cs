@@ -9,6 +9,7 @@ namespace KolayIK.Core.DTO
     public class AddressDTO
     {
         public int ID { get; set; }
+        public int UserID { get; set; }
         public string? CountryName { get; set; }
         public string? CityName { get; set; }
         public string? CountyName { get; set; }

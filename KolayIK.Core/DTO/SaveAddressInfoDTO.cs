@@ -15,6 +15,8 @@ namespace KolayIK.Core.DTO
         public int CityID { get; set; }
         public int CountyID { get; set; }
         public string AddressDetail { get; set; }
+        public bool Status { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
     }
 }

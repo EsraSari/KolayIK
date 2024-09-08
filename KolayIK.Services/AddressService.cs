@@ -1,4 +1,5 @@
-﻿using KolayIK.Core;
+﻿using AutoMapper;
+using KolayIK.Core;
 using KolayIK.Core.DTO;
 using KolayIK.Core.Modal;
 using KolayIK.Core.Services;
@@ -13,34 +14,21 @@ namespace KolayIK.Services
 {
     public class AddressService : IAddressInfoService
     {
-        private readonly IUnitOfWork unitOfWork; 
-        
-        private readonly ICountryService countryService;
-        private readonly ICountyService countyService;
-        private readonly ICityService cityService;
-
-        public AddressService(IUnitOfWork _unitOfWork, ICountryService _countryService, ICountyService _countyService, ICityService _cityService)
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+        public AddressService(IUnitOfWork _unitOfWork, IMapper _mapper)
         {
             unitOfWork = _unitOfWork;
-            countryService = _countryService;
-            countyService = _countyService;
+            mapper = _mapper;
         }
 
-        public async Task<AddressInfo> CreateAddressInfo(SaveAddressInfoDTO addressDTO)
+        public async Task<AddressDTO> CreateAddressInfo(SaveAddressInfoDTO saveAddressDTO)
         {
-            var address = new AddressInfo
-            {
-                UserID = addressDTO.UserID,
-                CountryID = addressDTO.CountryID,
-                CityID = addressDTO.CityID,
-                CountyID = addressDTO.CountyID,
-                AddressDetail = addressDTO.AddressDetail
-            };
-
+            var address = mapper.Map<AddressInfo>(saveAddressDTO);
             await unitOfWork.Addresses.AddAsync(address);
-            await unitOfWork.CommitAsync();
 
-            return address;
+            var addressDTO = mapper.Map<AddressDTO>(address);
+            return addressDTO;
         }
         public async Task<bool> DeleteAddress(int id)
         {
@@ -49,67 +37,41 @@ namespace KolayIK.Services
             if (address == null)
                 return false;
 
-            unitOfWork.Addresses.Remove(address);
+            address.Status = false;
+            address.ModifiedDate = DateTime.Now;
             await unitOfWork.CommitAsync();
-
             return true;
         }
-        public async Task UpdateAddress(AddressInfo addressToBeUpdated, SaveAddressInfoDTO newAddressData)
+        public async Task<bool> UpdateAddress(AddressInfo addressToBeUpdated, SaveAddressInfoDTO newAddressData)
         {
             addressToBeUpdated.CountryID = newAddressData.CountryID;
             addressToBeUpdated.CityID = newAddressData.CityID;
             addressToBeUpdated.CountyID = newAddressData.CountyID;
             addressToBeUpdated.AddressDetail = newAddressData.AddressDetail;
-
+            addressToBeUpdated.ModifiedDate = DateTime.Now;
             await unitOfWork.CommitAsync();
+            return true;
         }
         public async Task<AddressDTO> GetAddressById(int id)
         {
             var address = await unitOfWork.Addresses.GetByIDAsync(id);
-
             if (address == null)
             {
                 return null; 
             }
-
-            var addressDTO = new AddressDTO
-            {
-                ID = address.ID,
-                CountryName = address.Country.CountryName ?? "Bilinmiyor",
-                CountyName = address.County.CountyName ?? "Bilinmiyor",
-                CityName = address.City.CityName ?? "Bilinmiyor",
-                AddressDetail = address.AddressDetail,
-                AddedDate = address.AddedDate,
-                ModifiedDate = address.ModifiedDate
-            };
-
+            var addressDTO = mapper.Map<AddressDTO>(address);
             return addressDTO;
         }
-
-        public async Task<AddressDTO> GetAddressByUserId(int userId)
+        public async Task<IEnumerable<AddressDTO>> GetAddressByUserId(int userId)
         {
-            var address = await unitOfWork.Addresses
+            var addresses = await unitOfWork.Addresses
                 .GetByUserIdAsync(userId);
-
-            if (address == null)
-            {
+            if (addresses == null)
                 return null;
-            }
 
-            var addressDTO = new AddressDTO
-            {
-                ID = address.ID,
-                CountryName = address.Country.CountryName ?? "Bilinmiyor",
-                CountyName = address.County.CountyName ?? "Bilinmiyor",   
-                CityName = address.City.CityName?? "Bilinmiyor",
-                AddressDetail = address.AddressDetail,
-                AddedDate = address.AddedDate,
-                ModifiedDate = address.ModifiedDate
-            };
-
-            return addressDTO;
+            var addressDTOs = mapper.Map<List<AddressDTO>>(addresses);
+            return addressDTOs;
         }
-
         public async Task<IEnumerable<AddressDTO>> GetAllAddressInfo()
         {
             var addresses = await unitOfWork.Addresses.GetAllAsync();
@@ -117,21 +79,9 @@ namespace KolayIK.Services
 
             foreach (var address in addresses)
             {
-
-                var addressDTO = new AddressDTO
-                {
-                    ID = address.ID,
-                    CountryName = address.Country.CountryName ?? "Bilinmiyor",
-                    CountyName = address.County.CountyName ?? "Bilinmiyor",
-                    CityName = address.City.CityName ?? "Bilinmiyor",
-                    AddressDetail = address.AddressDetail,
-                    AddedDate = address.AddedDate,
-                    ModifiedDate = address.ModifiedDate
-                };
-
+                var addressDTO = mapper.Map<AddressDTO>(address);
                 addressDTOs.Add(addressDTO);
             }
-
             return addressDTOs;
         }
 

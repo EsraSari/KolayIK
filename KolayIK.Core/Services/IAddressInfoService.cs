@@ -10,11 +10,11 @@ namespace KolayIK.Core.Services
 {
     public interface IAddressInfoService
     {
-        Task<AddressInfo> CreateAddressInfo(SaveAddressInfoDTO addressDTO);
+        Task<AddressDTO> CreateAddressInfo(SaveAddressInfoDTO addressDTO);
         Task<bool> DeleteAddress(int id);
         Task<IEnumerable<AddressDTO>> GetAllAddressInfo();
         Task<AddressDTO> GetAddressById(int id);
-        Task<AddressDTO> GetAddressByUserId(int userId);
-        Task UpdateAddress (AddressInfo addressToBeUpdated, SaveAddressInfoDTO newAddressData);
+        Task<IEnumerable<AddressDTO>> GetAddressByUserId(int userId);
+        Task<bool> UpdateAddress (AddressInfo addressToBeUpdated, SaveAddressInfoDTO newAddressData);
     }
 }

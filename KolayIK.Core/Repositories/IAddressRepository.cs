@@ -9,7 +9,7 @@ namespace KolayIK.Core.Repositories
 {
     public interface IAddressRepository : IRepository<AddressInfo>
     {
-        Task<AddressInfo> GetByUserIdAsync(int userId);
+        Task<IEnumerable<AddressInfo>> GetByUserIdAsync(int userId);
         Task<AddressInfo> GetByIDAsync(int id);
         Task<IEnumerable<AddressInfo>> GetAllAsync();
     }

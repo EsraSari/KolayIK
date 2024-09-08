@@ -14,8 +14,8 @@ namespace KolayIK.Data.Configuration
         public void Configure(EntityTypeBuilder<AddressInfo> builder)
         {
             builder.HasOne(x => x.User)
-             .WithOne(x => x.AddressInfo)
-             .HasForeignKey<AddressInfo>(x => x.UserID)
+             .WithMany(x => x.Addresses)
+             .HasForeignKey(x => x.UserID)
              .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.City)

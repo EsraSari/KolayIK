@@ -10,7 +10,7 @@ namespace KolayIK.Core.Modal
 {
     public class AddressInfo: BaseClass
     {
-        public int UserID { get; set; } // Admin, manager, employee, company için.
+        public int UserID { get; set; }
         public AppUser User{ get; set; }
         public Country Country { get; set; }
         public int? CountryID { get; set; }

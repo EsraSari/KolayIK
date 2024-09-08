@@ -15,7 +15,6 @@
         public List<string> Roles { get; set; }
         public DateTime HireDate { get; set; }
         public double Salary { get; set; }
-        //public int? AddressInfoID { get; set; }
         public SaveAddressInfoDTO Address { get; set; }
         public double RemainingLeave { get; set; }
         public int? ManagerID { get; set; }

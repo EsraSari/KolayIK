@@ -41,7 +41,6 @@ namespace KolayIK.Services
                 CompanyID = newUser.Roles.Contains("Admin") || newUser.Roles.Contains("Manager") ? null : newUser.CompanyID,
                 GenderID = newUser.GenderID,
                 UserName = newUser.UserName,
-                AddressInfoID = newUser.Address.Id,
                 Email = newUser.Email,
                 NormalizedEmail = newUser.Email.ToUpper(),
                 PhoneNumber = newUser.PhoneNumber,
@@ -69,9 +68,7 @@ namespace KolayIK.Services
                 await unitOfWork.Addresses.AddAsync(address);
                 await unitOfWork.CommitAsync();
 
-                appUser.AddressInfoID = address.ID;
-                result = await userManager.UpdateAsync(appUser);
-
+                
                 if (!result.Succeeded)
                 {
                     var addressToRemove = await unitOfWork.Addresses.GetByIDAsync(address.ID);
@@ -92,15 +89,15 @@ namespace KolayIK.Services
                 if (!result.Succeeded)
                 {
                     await userManager.DeleteAsync(appUser);
-                    if (newUser.Address != null)
-                    {
-                        var addressToRemove = await unitOfWork.Addresses.GetByIDAsync(appUser.AddressInfoID.GetValueOrDefault());
-                        if (addressToRemove != null)
-                        {
-                            unitOfWork.Addresses.Remove(addressToRemove);
-                            await unitOfWork.CommitAsync();
-                        }
-                    }
+                    //if (newUser.Address != null)
+                    //{
+                    //    var addressToRemove = await unitOfWork.Addresses.GetByIDAsync(appUser.AddressInfoID.GetValueOrDefault());
+                    //    if (addressToRemove != null)
+                    //    {
+                    //        unitOfWork.Addresses.Remove(addressToRemove);
+                    //        await unitOfWork.CommitAsync();
+                    //    }
+                    //}
                     return result;
                 }
             }
@@ -180,13 +177,13 @@ namespace KolayIK.Services
                     Salary = user.Salary,
                     GenderName = user.Gender.GenderName,
                     CompanyName = user.Company?.CompanyName ?? "Bilinmiyor",
-                    CountryName = user.AddressInfo?.Country.CountryName ?? "Bilinmiyor",
-                    CityName = user.AddressInfo?.City.CityName ?? "Bilinmiyor",
-                    CountyName = user.AddressInfo?.County.CountyName?? "Bilinmiyor",
-                    EmergencyPerson = user.EmergencyPerson != null
-                        ? $"{user.EmergencyPerson.FirstName} {user.EmergencyPerson.LastName}"
-                        : "Bilinmiyor",
-                    AddressDetail = user.AddressInfo?.AddressDetail ?? "Bilinmiyor",
+                    //CountryName = user.AddressInfo?.Country.CountryName ?? "Bilinmiyor",
+                    //CityName = user.AddressInfo?.City.CityName ?? "Bilinmiyor",
+                    //CountyName = user.AddressInfo?.County.CountyName?? "Bilinmiyor",
+                    //EmergencyPerson = user.EmergencyPerson != null
+                    //    ? $"{user.EmergencyPerson.FirstName} {user.EmergencyPerson.LastName}"
+                    //    : "Bilinmiyor",
+                    //AddressDetail = user.AddressInfo?.AddressDetail ?? "Bilinmiyor",
                     AddedDate = user.AddedDate,
                     ModifiedDate = user.ModifiedDate,
                     UserName = user.UserName,
@@ -220,13 +217,13 @@ namespace KolayIK.Services
                     Salary = user.Salary,
                     GenderName = user.Gender.GenderName,
                     CompanyName = user.Company?.CompanyName ?? "Bilinmiyor",
-                    CountryName = user.AddressInfo?.Country.CountryName ?? "Bilinmiyor",
-                    CityName = user.AddressInfo?.City.CityName ?? "Bilinmiyor",
-                    CountyName = user.AddressInfo?.County.CountyName ?? "Bilinmiyor",
-                    EmergencyPerson = user.EmergencyPerson != null
-                        ? $"{user.EmergencyPerson.FirstName} {user.EmergencyPerson.LastName}"
-                        : "Bilinmiyor",
-                    AddressDetail = user.AddressInfo?.AddressDetail ?? "Bilinmiyor",
+                    //CountryName = user.AddressInfo?.Country.CountryName ?? "Bilinmiyor",
+                    //CityName = user.AddressInfo?.City.CityName ?? "Bilinmiyor",
+                    //CountyName = user.AddressInfo?.County.CountyName ?? "Bilinmiyor",
+                    //EmergencyPerson = user.EmergencyPerson != null
+                    //    ? $"{user.EmergencyPerson.FirstName} {user.EmergencyPerson.LastName}"
+                    //    : "Bilinmiyor",
+                    //AddressDetail = user.AddressInfo?.AddressDetail ?? "Bilinmiyor",
                     AddedDate = user.AddedDate,
                     ModifiedDate = user.ModifiedDate,
                     UserName = user.UserName,
